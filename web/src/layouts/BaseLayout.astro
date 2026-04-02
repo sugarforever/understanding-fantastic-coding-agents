@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} | Understanding Fantastic Coding Agents</title>
+  <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;height:56px;">
+      <a href={base} style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--accent);font-size:0.95rem;">
+        Coding Agents
+      </a>
+      <a href="https://github.com/sugarforever/understanding-fantastic-coding-agents" target="_blank" style="color:var(--text-secondary);font-size:0.85rem;">
+        GitHub
+      </a>
+    </div>
+  </nav>
+  <slot />
+  <footer style="border-top:1px solid var(--border);padding:32px 0;margin-top:64px;text-align:center;color:var(--text-secondary);font-size:0.85rem;">
+    <div class="container">
+      <p>Understanding Fantastic Coding Agents — Analysis pinned to 2026-03-31 commits</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  .site-nav {
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+</style>
