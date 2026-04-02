@@ -1,0 +1,66 @@
+---
+import { chapters, deepDives } from '../content/chapters';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<aside class="sidebar">
+  <a href={base} class="sidebar-home">← Home</a>
+  <nav>
+    {chapters.map((ch) => (
+      <a
+        href={`${base}chapters/${ch.slug}/`}
+        class:list={['sidebar-link', { active: currentSlug === ch.slug }]}
+      >
+        <span class="sidebar-num">{ch.number}</span>
+        {ch.title}
+      </a>
+    ))}
+  </nav>
+</aside>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 72px;
+    width: 240px;
+    flex-shrink: 0;
+    padding-right: 24px;
+    border-right: 1px solid var(--border);
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+  }
+  .sidebar-home {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-link {
+    display: block;
+    padding: 6px 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: color 0.15s;
+  }
+  .sidebar-link:hover { color: var(--text); text-decoration: none; }
+  .sidebar-link.active { color: var(--accent); font-weight: 600; }
+  .sidebar-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-right: 8px;
+    opacity: 0.6;
+  }
+  .sidebar-link.active .sidebar-num { color: var(--accent); opacity: 1; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+  }
+</style>

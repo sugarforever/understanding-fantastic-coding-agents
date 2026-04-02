@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { chapters } from '../../content/chapters';
+import { renderMarkdown } from '../../utils/markdown';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  return chapters.map((ch) => ({ params: { slug: ch.slug } }));
+}
+
+const { slug } = Astro.params;
+const chapter = chapters.find((ch) => ch.slug === slug)!;
+const chapterIndex = chapters.indexOf(chapter);
+const prev = chapterIndex > 0 ? chapters[chapterIndex - 1] : null;
+const next = chapterIndex < chapters.length - 1 ? chapters[chapterIndex + 1] : null;
+
+const docsDir = path.resolve(process.cwd(), '..', 'docs');
+const mdPath = path.join(docsDir, chapter.docPath);
+const rawContent = fs.readFileSync(mdPath, 'utf-8');
+const htmlContent = await renderMarkdown(rawContent);
+
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title={chapter.title}>
+  <div class="container chapter-layout">
+    <Sidebar currentSlug={slug!} />
+    <article class="chapter-content">
+      <nav class="breadcrumb">
+        <a href={base}>Home</a> <span class="sep">→</span> <span>{chapter.title}</span>
+      </nav>
+      <Fragment set:html={htmlContent} />
+      <nav class="chapter-nav">
+        {prev && <a href={`${base}chapters/${prev.slug}/`} class="nav-prev">← {prev.number} {prev.title}</a>}
+        {next && <a href={`${base}chapters/${next.slug}/`} class="nav-next">{next.number} {next.title} →</a>}
+      </nav>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .chapter-layout {
+    display: flex;
+    gap: 48px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .chapter-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 800px;
+  }
+  .chapter-content :global(h1) { color: var(--accent); margin-bottom: 24px; font-size: 1.8rem; }
+  .chapter-content :global(h2) { color: var(--text); margin-top: 48px; margin-bottom: 16px; font-size: 1.4rem; }
+  .chapter-content :global(h3) { color: var(--text); margin-top: 32px; margin-bottom: 12px; font-size: 1.1rem; }
+  .chapter-content :global(p) { margin-bottom: 16px; }
+  .chapter-content :global(ul), .chapter-content :global(ol) { margin-bottom: 16px; padding-left: 24px; }
+  .chapter-content :global(li) { margin-bottom: 6px; }
+  .breadcrumb { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 24px; }
+  .breadcrumb a { color: var(--accent); }
+  .breadcrumb .sep { margin: 0 4px; }
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .nav-prev, .nav-next { color: var(--accent); }
+  .nav-next { margin-left: auto; }
+</style>
