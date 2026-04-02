@@ -4,7 +4,7 @@ How an agent modifies code is a core design decision. The editing approach affec
 
 ## Codex: Unified Patch Format (`apply_patch`)
 
-Codex uses a custom patch format inspired by unified diffs:
+Codex uses a **fully custom patch engine** implemented in Rust (`codex-rs/apply-patch/` crate). It does not use OS-level tools like `patch`, `git apply`, or `diff` — everything is implemented from scratch.
 
 ### Patch Syntax
 
@@ -46,7 +46,7 @@ A single patch can:
 
 ## Claude Code: String Replacement (`FileEdit`)
 
-Claude Code uses exact string matching and replacement:
+Claude Code uses a **fully custom string replacement tool** implemented in TypeScript (`src/tools/FileEditTool/`). It does not shell out to `sed`, `patch`, or any external command — the core is JavaScript's native `String.replace()` / `String.replaceAll()` with custom matching and encoding logic on top.
 
 ### Input Format
 
@@ -102,7 +102,8 @@ Claude Code uses exact string matching and replacement:
 | **Atomicity** | Full transaction (all or nothing) | Per-edit (no cross-file transactions) |
 | **New files** | Part of patch format | Separate `FileWrite` tool |
 | **Delete files** | Part of patch format | Via `Bash` (`rm`) |
-| **Matching** | Line-based context | Exact string (fuzzy whitespace) |
+| **Implementation** | Custom Rust engine (no OS tools) | Custom TypeScript (native JS `String.replace()`) |
+| **Matching** | 4-pass fuzzy: exact → trailing whitespace → all whitespace → Unicode normalization | Exact string with curly/straight quote normalization |
 | **Uniqueness** | N/A (context-positioned) | `old_string` must be unique in file |
 | **Token cost** | Efficient for multi-file changes | One tool call per edit location |
 | **Error mode** | Patch fails if context doesn't match | Edit fails if string not found or ambiguous |
