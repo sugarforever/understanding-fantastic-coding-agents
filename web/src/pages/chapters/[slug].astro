@@ -32,8 +32,8 @@ const base = import.meta.env.BASE_URL;
       </nav>
       <Fragment set:html={htmlContent} />
       <nav class="chapter-nav">
-        {prev && <a href={`${base}chapters/${prev.slug}/`} class="nav-prev">← {prev.number} {prev.title}</a>}
-        {next && <a href={`${base}chapters/${next.slug}/`} class="nav-next">{next.number} {next.title} →</a>}
+        {prev && <a href={`${base}/chapters/${prev.slug}/`} class="nav-prev">← {prev.number} {prev.title}</a>}
+        {next && <a href={`${base}/chapters/${next.slug}/`} class="nav-next">{next.number} {next.title} →</a>}
       </nav>
     </article>
   </div>
