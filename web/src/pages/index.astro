@@ -1,9 +1,47 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroBanner from '../components/HeroBanner';
+import AgentLoopDiagram from '../components/AgentLoopDiagram';
+import ToolMatrix from '../components/ToolMatrix';
+import ChapterCard from '../components/ChapterCard.astro';
+import { chapters } from '../content/chapters';
+
+const base = import.meta.env.BASE_URL;
 ---
 <BaseLayout title="Home">
-  <main class="container" style="padding-top:64px;">
-    <h1 style="color:var(--accent);">Understanding Fantastic Coding Agents</h1>
-    <p style="color:var(--text-secondary);margin-top:8px;">Site under construction</p>
+  <main class="container">
+    <HeroBanner client:load />
+    <AgentLoopDiagram client:visible />
+    <ToolMatrix client:visible />
+
+    <section id="chapters" style="padding:64px 0;">
+      <h2 style="font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:1.4rem;text-align:center;margin-bottom:32px;">
+        Chapters
+      </h2>
+      <div class="chapter-grid">
+        {chapters.map((ch) => (
+          <ChapterCard
+            number={ch.number}
+            title={ch.title}
+            description={ch.description}
+            href={`${base}chapters/${ch.slug}/`}
+          />
+        ))}
+      </div>
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .chapter-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .chapter-grid { grid-template-columns: 1fr; }
+  }
+</style>
