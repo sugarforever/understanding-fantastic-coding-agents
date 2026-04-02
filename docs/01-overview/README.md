@@ -27,9 +27,9 @@ This project compares two production coding agents that represent different engi
 ### Claude Code (Anthropic)
 
 - **Source**: Closed-source; analysis based on decompiled source (v2.1.88) — see [VERSIONS.md](https://github.com/sugarforever/understanding-fantastic-coding-agents/blob/main/VERSIONS.md)
-- **Language**: TypeScript (single package, Bun runtime)
-- **UI**: Custom Ink-like renderer (React + react-reconciler)
-- **Distribution**: NPM package, runs in Bun
+- **Language**: TypeScript
+- **UI**: Custom Ink-like renderer (React + react-reconciler); also available as a Desktop app (macOS, Windows)
+- **Distribution**: Native binary installer (recommended, auto-updates), Homebrew, WinGet, Desktop app, npm (deprecated)
 - **Models**: Claude Sonnet, Opus, Haiku (Anthropic Messages API)
 
 ## Design Philosophies

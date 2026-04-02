@@ -100,10 +100,11 @@ If none of the fast paths match, the full application loads through `main.tsx` �
 | Aspect | Codex CLI | Claude Code |
 |--------|----------|-------------|
 | **Build tool** | Cargo (Rust) | Bun bundler |
-| **Output** | Statically linked native binary per platform | JavaScript bundle |
-| **NPM packages** | `@openai/codex` (wrapper) + `@openai/codex-{platform}-{arch}` (binaries) | `@anthropic-ai/claude-code` (single package) |
-| **Platform coverage** | macOS (x64, arm64), Linux (x64, arm64, musl), Windows (x64, arm64) | Anywhere Bun runs |
-| **Startup time** | Near-instant (native binary) | ~135ms (JS imports + parallel OS operations) |
-| **Binary dependencies** | None — statically linked | Vendored ripgrep binary per platform |
+| **Output** | Statically linked native binary per platform | Native binary (recommended) or JavaScript bundle (npm, deprecated) |
+| **Distribution** | `@openai/codex` (NPM wrapper) + `@openai/codex-{platform}-{arch}` (binaries) | Native installer (auto-updates), Homebrew, WinGet, Desktop app, npm (deprecated) |
+| **Platform coverage** | macOS (x64, arm64), Linux (x64, arm64, musl), Windows (x64, arm64) | macOS 13+, Windows 10+, Ubuntu 20.04+, Debian 10+, Alpine 3.19+ |
+| **Startup time** | Near-instant (native binary) | Near-instant (native binary); ~500-1500ms slower via npm |
+| **Binary dependencies** | None — statically linked | Vendored ripgrep; native binary has no runtime dependencies |
+| **Code signing** | Not documented | macOS: signed by "Anthropic PBC" + Apple notarized; Windows: signed by "Anthropic, PBC"; GPG-signed manifests |
 
-Codex compiles to zero-dependency native binaries. Claude Code ships as JavaScript but vendors platform-specific binaries (ripgrep) for search functionality.
+Codex compiles to zero-dependency native binaries distributed via NPM platform packages. Claude Code has evolved from an npm package to a **native binary installer** as the recommended distribution method — the npm package (`@anthropic-ai/claude-code`) is now deprecated. The native binary requires no Node.js/Bun runtime, auto-updates in the background, and starts significantly faster. A **Desktop app** (macOS, Windows) is also available alongside the CLI.
