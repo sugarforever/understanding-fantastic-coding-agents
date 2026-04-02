@@ -44,7 +44,7 @@ The tool set is minimal — mostly `shell` and `apply_patch` — because the mod
 
 ### Claude Code: "Analyze everything, ask before doing anything risky"
 
-Claude Code uses **application-level permission checks** with an ML classifier to assess risk before execution. There's no kernel sandbox — instead, every tool call goes through a permission system that can auto-approve safe operations, prompt the user for risky ones, or deny dangerous ones outright.
+Claude Code uses **application-level permission checks** with an LLM-based classifier (a side query to Claude itself) to assess risk before execution. There's no kernel sandbox — instead, every tool call goes through a permission system that can auto-approve safe operations, prompt the user for risky ones, or deny dangerous ones outright.
 
 The tool set is large (40+) with purpose-built tools for search, file editing, web access, and more. Each tool has its own permission logic, input validation, and output formatting. This is a **control-at-every-layer** approach.
 

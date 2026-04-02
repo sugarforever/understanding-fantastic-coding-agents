@@ -83,7 +83,7 @@ Claude Code has **no kernel-level sandbox**. Instead, it checks every operation 
 
 ### Key Property
 
-The permission system is **flexible and adaptive**. The ML classifier can assess novel commands the rule system hasn't seen. Rules can be configured at multiple levels. But it's only as good as its analysis — if a command passes all checks, it runs with full system privileges.
+The permission system is **flexible and adaptive**. The LLM classifier (a side query to Claude itself) can assess novel commands the rule system hasn't seen. Rules can be configured at multiple levels. But it's only as good as its analysis — if a command passes all checks, it runs with full system privileges.
 
 ## Comparison
 

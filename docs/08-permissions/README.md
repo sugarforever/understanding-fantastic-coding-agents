@@ -101,14 +101,16 @@ Rule examples:
 
 ### YOLO Classifier
 
-A ~52KB ML-based command analyzer used in `auto` mode:
+The "classifier" in `auto` mode is not a traditional ML model — it's an **LLM side query**. Claude Code calls the Claude API itself (via `sideQuery()`) to judge whether a proposed action is safe:
 
-- Analyzes bash commands, file operations, and tool inputs
-- Scores risk based on dangerous patterns, file locations, command structure
+- Sends conversation history + proposed tool action to a Claude model (defaults to the same model used in the main loop)
+- The model evaluates risk and returns allow/deny with reasoning
+- Can run as a two-stage pipeline (fast check → detailed review) or single-stage
 - Runs speculatively in parallel with UI (doesn't block)
-- Three outcomes: auto-approve, auto-deny, or fall back to asking
-- Separate classifiers for PowerShell and sed commands
-- If classifier fails or times out, defaults to asking the user
+- Three outcomes: auto-approve, auto-deny, or fall back to asking the user
+- Separate classifier prompts for PowerShell and sed commands
+- If the classifier API call fails or times out, defaults to blocking (safe fallback)
+- ~52KB of classifier logic including prompt templates, parsing, and orchestration
 
 ### Permission Dialog
 
@@ -147,7 +149,7 @@ In `default` mode, the user sees an interactive dialog:
 | Aspect | Codex (Guardian) | Claude Code (Multi-Layer) |
 |--------|-----------------|--------------------------|
 | **Approval modes** | 5 modes (never, on-failure, on-request, unless-trusted, granular) | 6 modes |
-| **Auto-approval** | Execution policy matching (declarative) | ML classifier (adaptive) |
+| **Auto-approval** | Execution policy matching (declarative) | LLM side query — Claude judges its own actions |
 | **Typed requests** | Yes (ShellCommand, ApplyPatch, etc.) | Per-tool check (generic) |
 | **Runtime amendment** | Model can request new permissions | User adds rules via dialog |
 | **Enterprise** | Config-driven | Remote-managed with kill switches |
