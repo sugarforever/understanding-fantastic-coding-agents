@@ -46,7 +46,7 @@ const data: Row[] = [
   {
     category: 'Permissions',
     codex: { name: 'request_permissions', summary: 'Model can request new permissions', detail: 'Model can ask for elevated permissions at runtime via the request_permissions tool. Declarative execution policies (JSON/TOML) can be amended during session.' },
-    claude: { name: 'Permission Dialog', summary: 'Interactive approval + ML classifier', detail: 'YOLO classifier auto-approves safe operations. PermissionDialog shows interactive UI for risky ops. Rules from 5+ sources (policy→user→project→CLI→session).' },
+    claude: { name: 'Permission Dialog', summary: 'Interactive approval + LLM classifier', detail: 'YOLO classifier is an LLM side query — Claude judges its own actions via an extra API call. PermissionDialog shows interactive UI for risky ops. Rules from 5+ sources (policy→user→project→CLI→session).' },
   },
 ];
 

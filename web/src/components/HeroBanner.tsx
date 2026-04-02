@@ -92,7 +92,7 @@ export default function HeroBanner() {
             Claude Code
           </div>
           <div style={{ color: '#a3a3a3', fontSize: '0.85rem', marginBottom: '20px' }}>
-            Anthropic · TypeScript · ML Classifier
+            Anthropic · TypeScript · LLM Classifier
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '32px' }}>
             {claudeStats.map((s) => (
