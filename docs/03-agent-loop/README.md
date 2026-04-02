@@ -104,9 +104,9 @@ Tools are partitioned into concurrent and serial batches:
 
 ### Why It Matters
 
-The turn-based model is easier to reason about — each turn is a clean unit with defined inputs and outputs. But it means the agent can't stream partial results or interleave tool execution with response generation.
+The turn-based model is easier to reason about — each turn is a clean unit with defined inputs and outputs. Codex does stream text and reasoning deltas to the UI during a turn, and spawns tool futures during streaming (not waiting for the response to complete). However, tool results are only processed after all futures are drained at stream end, making the turn boundary the synchronization point.
 
-The generator model is more flexible — it can yield events as they happen, handle mid-stream context compaction, and naturally pause at permission prompts. But the control flow is harder to follow (main.tsx alone is ~785KB).
+The generator model is more flexible — it can yield events as they happen, handle mid-stream context compaction, and naturally pause at permission prompts. Claude Code's `StreamingToolExecutor` can yield completed tool results while other tools are still running, making the flow more fine-grained. But the control flow is harder to follow (main.tsx alone is ~785KB).
 
 ## Deep Dive
 
